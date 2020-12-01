@@ -44,6 +44,17 @@ class article_viewsets(viewsets.ViewSet):
             return  Response(serializer.data)
         return  Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        
+    def destroy(self, request,pk=None, *args, **kwargs):
+        user=request.user
+        queryset = Cart.objects.filter(customer=Customer.objects.get(user=user))
+        try:
+            artical = get_object_or_404(queryset, pk=pk).delete()
+            return  Response({"Success": "Delate Successfully"})
+        except Http404:
+            pass
+        return  Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
